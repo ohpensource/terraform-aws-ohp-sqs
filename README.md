@@ -1,6 +1,6 @@
 # Terraform SQS Module for NewStack Services
 
-Current version: v0.0.0
+Current version: v0.1.0
 
 Based on Terraform Registry module "terraform-aws-modules/sqs/aws"
 
@@ -15,7 +15,7 @@ An SQS policy can be specified by passing a JSON formatted policy.
 
 ```(terraform)
 module "aws_chatops" {
-  source = "https://github.com/ruebroad/terraform-aws-ns-sqs?ref=v0.0.0"
+  source = "https://github.com/ruebroad/terraform-aws-ns-sqs?ref=v0.1.0"
 
   name_prefix = ""
   queue_names = ""
