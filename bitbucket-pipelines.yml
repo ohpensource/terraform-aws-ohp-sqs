@@ -1,0 +1,52 @@
+# image:
+  name: 086282490297.dkr.ecr.eu-west-1.amazonaws.com/xops-cicd-python-alpine:latest
+  aws:
+    access-key: $ECR_AWS_ACCESS_KEY_XOPS_PULL
+    secret-key: $ECR_AWS_SECRET_KEY_XOPS_PULL
+
+definitions:
+  steps:
+    - step: &shellcheck
+        name: check scripts
+        image: koalaman/shellcheck-alpine:stable
+        script: 
+          - |
+            find . -type f -name '*.sh' | wc -l
+            find . -type f -name '*.sh' | xargs shellcheck --external-sources
+    - step: &tfm_init
+        name: init - lint - validate
+        image: hashicorp/terraform:0.13.5
+        script: 
+          - |
+            terraform init -input=false
+            if [ $? != "0" ]; then exit $?; fi
+          - |
+            chmod +x .bitbucket/lint.sh
+            chmod +x .bitbucket/validate.sh
+            source ./.bitbucket/lint.sh
+            source ./.bitbucket/validate.sh
+    - step: &bump
+        name: bump module version
+        script:
+          - set -o pipefail
+          - |
+            # Use Oauth
+            export access_token=$(curl -s -X POST -u "${AUTOMATION_CLIENT_ID}:${AUTOMATION_CLIENT_SECRET}" \
+              https://bitbucket.org/site/oauth2/access_token \
+              -d grant_type=client_credentials -d scopes="repository"| jq --raw-output '.access_token')
+            git remote set-url origin "https://x-token-auth:${access_token}@bitbucket.org/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}"
+          - |
+            # Update version
+            chmod +x .bitbucket/bump.sh
+            source .bitbucket/bump.sh
+pipelines:
+  branches:
+    feature/*:
+      - step: 
+          <<: *shellcheck
+      - step:
+          <<: *tfm_init
+    master:
+      - step:
+          <<: *bump
+          
