@@ -2,8 +2,8 @@
 
 variable "name_prefix" {}
 variable "environment" {}
-variable "tags" { 
-  type = map
+variable "tags" {
+  type    = map
   default = {}
 }
 variable "region" { default = "eu-west-1" }

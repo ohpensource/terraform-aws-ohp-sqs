@@ -1,4 +1,4 @@
-# image:
+image:
   name: 086282490297.dkr.ecr.eu-west-1.amazonaws.com/xops-cicd-python-alpine:latest
   aws:
     access-key: $ECR_AWS_ACCESS_KEY_XOPS_PULL
