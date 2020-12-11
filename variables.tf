@@ -79,7 +79,7 @@ variable "kms_master_key_id" {
   description = "The ID of an AWS-managed customer master key (CMK) for Amazon SNS or a custom CMK. For more information"
 }
 variable "encrypt_sqs" {
-  default     = true
+  default     = false
   type        = bool
   description = "If master key is not provided a AWS managed key will be created"
 }
