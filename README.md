@@ -15,7 +15,7 @@ An SQS policy can be specified by passing a JSON formatted policy.
 
 ```(terraform)
 module "aws_chatops" {
-  source = "https://bitbucket.org/ohpen-dev/terraform-aws-ns-sqs?ref=v0.1.0"
+  source = "git::ssh://git@bitbucket.org/ohpen-dev/terraform-aws-ns-sqs?ref=v0.1.0"
 
   name_prefix = ""
   queue_names = ""
