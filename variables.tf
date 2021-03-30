@@ -3,14 +3,13 @@
 variable "name_prefix" {}
 variable "environment" {}
 variable "tags" {
-  type    = map
-  default = {}
+  type = map(any)
 }
 variable "region" { default = "eu-west-1" }
 
 # SQS
 variable "queue_names" {
-  type    = list
+  type    = list(any)
   default = ["notify", "docs", "create"]
 }
 
