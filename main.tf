@@ -18,9 +18,9 @@ module "sqs" {
     maxReceiveCount     = var.deadletter_max_receive_count
   }) : ""
   visibility_timeout_seconds = var.visibility_timeout_seconds
-  tags = merge(var.tags, map(
-    "Name", "${var.name_prefix}-${each.key}",
-    "Workspace", terraform.workspace
+  tags = merge(var.tags, tomap({
+    "Name" = "${var.name_prefix}-${each.key}",
+    "Workspace" = terraform.workspace }
   ))
 }
 
@@ -41,9 +41,9 @@ module "sqs_dl" {
   receive_wait_time_seconds         = var.receive_wait_time_seconds
   redrive_policy                    = ""
   visibility_timeout_seconds        = var.visibility_timeout_seconds
-  tags = merge(var.tags, map(
-    "Name", "${var.name_prefix}-${each.key}-dl",
-    "Workspace", terraform.workspace
+  tags = merge(var.tags, tomap(
+    { "Name" = "${var.name_prefix}-${each.key}-dl",
+    "Workspace" = terraform.workspace }
   ))
 }
 
