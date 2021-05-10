@@ -8,8 +8,10 @@ resource "aws_kms_key" "sqs" {
   enable_key_rotation      = var.enable_key_rotation
 
   tags = merge(var.tags,
-    map("Name", var.name_prefix),
-    map("Environment", lower(var.environment)),
+    tomap({
+      "Name"        = var.name_prefix,
+      "Environment" = lower(var.environment)
+    }),
   )
 }
 
