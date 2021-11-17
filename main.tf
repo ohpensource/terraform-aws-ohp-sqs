@@ -1,7 +1,7 @@
 module "sqs" {
   for_each = toset(var.queue_names)
   source   = "terraform-aws-modules/sqs/aws"
-  version  = "2.1.0"
+  version  = "3.1.0"
 
   name                              = "${var.name_prefix}-${each.key}"
   kms_master_key_id                 = local.kms_master_key_id
