@@ -39,7 +39,7 @@ Creates AWS SQS queues
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_sqs"></a> [sqs](#module\_sqs) | terraform-aws-modules/sqs/aws | 2.1.0 |
+| <a name="module_sqs"></a> [sqs](#module\_sqs) | terraform-aws-modules/sqs/aws | 3.1.0 |
 | <a name="module_sqs_dl"></a> [sqs\_dl](#module\_sqs\_dl) | terraform-aws-modules/sqs/aws | 2.1.0 |
 
 ### Resources
