@@ -4,4 +4,3 @@
 * Merge pull request #1 from ohpensource/feature/lanz-1390
 - - -
 - - -
-# Changelog

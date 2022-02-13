@@ -4,39 +4,40 @@ on:
     branches: ["main"]
 
 jobs:
-  tfm-validate:
+  check-conventional-commits:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Terraform Install
-        uses: hashicorp/setup-terraform@v1
-      - name: tfm-validate
-        run: |
-          chmod +x -R ./scripts
-          ./scripts/tfm_init.sh
-
-      - name: Lint Terraform
-        run: terraform fmt -write=false -list=true -recursive -check
-
-      - name: TFLint Install
-        uses: terraform-linters/setup-tflint@v1
-      - name: Run tflint
-        run: |
-          tflint --init
-          tflint -f compact
-  tfm-docs:
+      - uses: ohpensource/platform-cicd/actions/git/ensure-conventional-commits@0.6.0.0
+        name: Ensure conventional commits
+        with:
+          base-branch: $GITHUB_BASE_REF
+          pr-branch: $GITHUB_HEAD_REF
+  check-jira-tickets-commits:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
-      - name: Render terraform docs inside the README.md and push changes back to PR branch
-        uses: terraform-docs/gh-actions@v0.11.0
+          fetch-depth: 0
+      - uses: ohpensource/platform-cicd/actions/git/ensure-commits-message-jira-ticket@0.6.0.0
+        name: Ensure Jira ticket in all commits
         with:
-          working-dir: .
-          output-file: README.md
-          output-method: inject
-          git-push: "true"
-          indention: 3
+          base-branch: $GITHUB_BASE_REF
+          pr-branch: $GITHUB_HEAD_REF
+  validate-iac:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ohpensource/platform-cicd/actions/terraform/tfm-validate@2.2.0.0
+        name: validate-terraform
+        with:
+          terraform-folder: "./"
+          use-backend: "false"
+  validate-security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: aquasecurity/tfsec-action@v1.0.1
+        name: analyse-security
