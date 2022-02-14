@@ -46,4 +46,3 @@ module "sqs_dl" {
     "Workspace" = terraform.workspace }
   ))
 }
-
