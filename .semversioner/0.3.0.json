@@ -1,0 +1,6 @@
+[
+  {
+    "description": "fix: set encrypt false",
+    "type": "minor"
+  }
+]
